@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+	
+<sqlMap>
+	<typeAlias alias="customer" type="kr.co.jhta.vo.Customer"/>
+
+	<select id="getAllCustomer" resultClass="customer">
+		select 
+			no no,
+			name name,
+			nickname nickName,
+			tel tel,
+			email email,
+			city city,
+			point point,
+			create_date createDate
+		from
+			ex_table
+		order by
+			1
+	</select>
+	
+	<select id="getCustomerByNo" parameterClass="int" resultClass="customer">
+		select 
+			no no,
+			name name,
+			nickname nickName,
+			tel tel,
+			email email,
+			city city,
+			point point,
+			create_date createDate
+		from
+			ex_table
+		where
+			no = #value#
+	</select>
+	
+	<select id="getCustomerByKeyword" parameterClass="map" resultClass="customer">
+		select 
+			no no,
+			name name,
+			nickname nickName,
+			tel tel,
+			email email,
+			city city,
+			point point,
+			create_date createDate
+		from
+			ex_table
+		where
+			1 = 1
+			<dynamic>
+				<isNotEmpty property="sort">
+					<isEqual property="sort" compareValue="번호">
+						and no = #keyword#
+					</isEqual>
+					<isEqual property="sort" compareValue="이름">
+						and name = #keyword#
+					</isEqual>
+					<isEqual property="sort" compareValue="닉네임">
+						and nickname = #keyword#
+					</isEqual>
+				</isNotEmpty>
+			</dynamic>
+	</select>
+	
+	<update id="updateCustomerByNo" parameterClass="customer">
+		update ex_table
+		set 
+			name = #name#,
+			nickname = #nickName#,
+			tel = #tel#, 
+			email = #email#,
+			city = #city#,
+			point = #point#
+		where
+			no = #no#
+	</update>
+	
+	<delete id="deleteCustomerByNo" parameterClass="int">
+		delete from ex_table
+		where 
+			no = #value#
+	</delete>
+	
+	<insert id="insertCustomerByNo" parameterClass="customer">
+		insert into ex_table
+			(no, name, nickname, tel, email, city, point)
+		values
+			(ex_seq.nextval, #name#, #nickName#, #tel#, #email#, #city#, #point#)
+	</insert>
+</sqlMap>
